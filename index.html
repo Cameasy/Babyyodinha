@@ -3,7 +3,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-	<title>Prjecto | Home</title>
+	<title>Babyyodinha | Home</title>
+	<link rel="shortcut icon" href="imagens/favicon.ico" />
+
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="bootstrap/js/bootstrap.min.js">
 	<link rel="stylesheet" type="text/css" href="css/estilo.css">
@@ -15,29 +17,9 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
-<meta charset="utf-8">
-					<title>jQuery.post demo</title>
-					<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-<script>
-function onegociola() {
-	let email = document.getElementById("email");
-	let Senha = document.getElementById("senha");
-  var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "http://52.91.139.190/fsapi/users/login", true);
-  	xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-	  document.getElementById('demo').alert = 'Inscrito!'+this.responseText
-    }
-  }; 
-  xhttp.send(JSON.stringify({
-	   "email": "tlopes@gmail.com",
-		"password": "123456"
-  }));
-  event.preventDefault()
-}
-	</script>
-<body style="background-image: url(imagens/geometri2.png) !important; background-size: cover !important; background-repeat: no-repeat !important;">
+<body style="background-size: cover !important; background-repeat: no-repeat !important;">
 	<img id="png" src="imagens/sabres.png" style="opacity: .8">
 	<div class="navbar navbar-dark navbar-expand-lg">
 		<a class="navbar-brand hovereffect" href="#">
@@ -52,9 +34,9 @@ function onegociola() {
 					<input type="password" id="senha" name="usuario_email" />
 				</div>
 				<div class="button">
-				<button type="button" onclick="onegociola()">
+				<button type="button" onclick="efetuarLogin()">
 					Seja inscrito!</button>
-				<p id="demo"></p>
+				<p id="welcome" style="margin-top: 10%;"></p>
 			</div>
 			</form>
 		</a>
@@ -202,8 +184,6 @@ function onegociola() {
   </footer>
 	<script>
 	  AOS.init();
-	</script>	
-	<script>
 		var $doc = $('html, body');
 		$('a').click(function() {
 		    $doc.animate({
@@ -211,6 +191,28 @@ function onegociola() {
 		    }, 500);
 		    return false;
 		});
+
+	//requisicao para efetuar login
+	function efetuarLogin() {
+		let email = document.getElementById("email").value;
+		let senha = document.getElementById("senha").value;
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "http://52.91.139.190/fsapi/users/login", true);
+		xhttp.setRequestHeader("Content-type", "application/json");
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var json = JSON.parse(this.responseText);
+					document.getElementById('welcome').innerHTML = 'Inscrito! '+ json.user.name
+			}
+		}; 
+		xhttp.send(JSON.stringify({
+			"email": email,
+			"password": senha
+		}));
+
+		event.preventDefault()
+	}
+
 	</script>
 </body>
 </html>
